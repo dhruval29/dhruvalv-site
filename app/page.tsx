@@ -27,6 +27,7 @@ function DimLine({
   bg: string;
   isDark: boolean;
 }) {
+  const reveal = useReveal<HTMLDivElement>(type === "horizontal" ? 0.2 : 0.26, "fade");
   const color = isDark ? "#FFB800" : "#000000";
   const arrowSize = "0.39vw";
   const lineThick = "2px";
@@ -44,6 +45,7 @@ function DimLine({
   if (type === "horizontal") {
     return (
       <div
+        ref={reveal.ref}
         style={{
           position: "absolute",
           top: "calc(100% + 0.78vw)",
@@ -53,6 +55,7 @@ function DimLine({
           alignItems: "center",
           height: "1vw",
           pointerEvents: "none",
+          ...reveal.anim,
         }}
       >
         {/* left arrowhead */}
@@ -68,6 +71,7 @@ function DimLine({
 
   return (
     <div
+      ref={reveal.ref}
       style={{
         position: "absolute",
         left: "calc(100% + 0.52vw)",
@@ -78,12 +82,22 @@ function DimLine({
         alignItems: "center",
         width: "2vw",
         pointerEvents: "none",
+        ...reveal.anim,
       }}
     >
       {/* top arrowhead */}
       <div style={{ width: 0, height: 0, borderLeft: `${arrowSize} solid transparent`, borderRight: `${arrowSize} solid transparent`, borderBottom: `calc(${arrowSize} * 1.8) solid ${color}`, flexShrink: 0 }} />
       <div style={{ flex: 1, width: lineThick, background: color }} />
-      <span style={{ ...font, writingMode: "vertical-rl", transform: "rotate(180deg)" }}>{value}px</span>
+      <span
+        style={{
+          ...font,
+          writingMode: "vertical-rl",
+          transform: "rotate(180deg)",
+          padding: "0.26vw 0",
+        }}
+      >
+        {value}px
+      </span>
       <div style={{ flex: 1, width: lineThick, background: color }} />
       {/* bottom arrowhead */}
       <div style={{ width: 0, height: 0, borderLeft: `${arrowSize} solid transparent`, borderRight: `${arrowSize} solid transparent`, borderTop: `calc(${arrowSize} * 1.8) solid ${color}`, flexShrink: 0 }} />
@@ -94,6 +108,7 @@ function DimLine({
 /** Profile photo with live dimension annotations (Figma-style) */
 function PhotoWithDimensions({ bg, isDark }: { bg: string; isDark: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
+  const reveal = useReveal<HTMLDivElement>(0.16, "right");
   const [dims, setDims] = useState({ w: 0, h: 0 });
 
   useEffect(() => {
@@ -111,12 +126,14 @@ function PhotoWithDimensions({ bg, isDark }: { bg: string; isDark: boolean }) {
 
   return (
     <div
+      ref={reveal.ref}
       style={{
         position: "absolute",
         left: "68.81%",
         top: "13.28vw",
         width: "24%",
         height: "27.95vw",
+        ...reveal.anim,
       }}
     >
       {/* Photo */}
@@ -133,7 +150,7 @@ function PhotoWithDimensions({ bg, isDark }: { bg: string; isDark: boolean }) {
           src="/profile.jpg"
           alt="Dhruval J. Vashi"
           fill
-          style={{ objectFit: "cover", objectPosition: "center top" }}
+          style={{ objectFit: "cover", objectPosition: "42% top" }}
           priority
         />
       </div>
@@ -165,23 +182,74 @@ function CornerDots() {
   );
 }
 
+/** India flag accent added beside the name, matching updated Figma */
+function NameFlag({ isDark }: { isDark: boolean }) {
+  const poleReveal = useReveal<HTMLDivElement>(0.18, "up");
+  const flagReveal = useReveal<HTMLDivElement>(0.26, "up");
+
+  return (
+    <>
+      {/* Pole */}
+      <div
+        ref={poleReveal.ref}
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          left: "22.10%",
+          top: "21.09vw",
+          width: "0.10vw",
+          height: "4.69vw",
+          background: isDark ? "#ffffff" : "#000000",
+          ...poleReveal.anim,
+        }}
+      />
+
+      {/* Flag */}
+      <div
+        ref={flagReveal.ref}
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          left: "23.05%",
+          top: "21.62vw",
+          width: "5.60%",
+          height: "3.71vw",
+          overflow: "hidden",
+          ...flagReveal.anim,
+        }}
+      >
+        <Image
+          src="/Flag_of_India.svg.png"
+          alt=""
+          fill
+          style={{ objectFit: "cover" }}
+        />
+      </div>
+    </>
+  );
+}
+
 /**
  * "Toggle System Illumination" lever — ported from the Stitch design.
  * Receives isDark + toggle from the parent so the whole page can react.
  */
 function ThemeLever({ isDark, toggle }: { isDark: boolean; toggle: () => void }) {
+  const reveal = useReveal<HTMLDivElement>(0.08, "up");
 
   return (
     <div
+      ref={reveal.ref}
+      className="toggle-btn"
       onClick={toggle}
       title="Toggle System Illumination"
       style={{
         position: "absolute",
-        left: "79.49%",
-        top: "2.90vw",
-        width: "2.86%",
+        left: "92.20%",
+        top: "2.01vw",
+        width: "3.80%",
         cursor: "pointer",
         userSelect: "none",
+        ...reveal.anim,
       }}
     >
       {/* ── Lever body ─────────────────────────────────────────── */}
@@ -190,7 +258,7 @@ function ThemeLever({ isDark, toggle }: { isDark: boolean; toggle: () => void })
       <div
         style={{
           position: "relative",
-          border: `0.13vw solid ${isDark ? "#353535" : "#d5c4ab"}`,
+          border: `0.17vw solid ${isDark ? "#353535" : "#d5c4ab"}`,
           background: isDark ? "#1a1a1a" : "#e5e2e1",
           width: "100%",
           paddingTop: "145%",
@@ -205,12 +273,12 @@ function ThemeLever({ isDark, toggle }: { isDark: boolean; toggle: () => void })
         <div
           style={{
             position: "absolute",
-            top: "0.52vw",
-            bottom: "0.52vw",
+            top: "0.66vw",
+            bottom: "0.66vw",
             left: "50%",
             transform: "translateX(-50%)",
             width: "27%",
-            borderRadius: "0.39vw",
+            borderRadius: "0.50vw",
             background: isDark ? "#0a0a0a" : "#b8b2a8",
             boxShadow: isDark
               ? "inset 0 0.13vw 0.26vw rgba(0,0,0,1)"
@@ -224,12 +292,12 @@ function ThemeLever({ isDark, toggle }: { isDark: boolean; toggle: () => void })
           {/* gradient rod — lighter in light mode */}
           <div
             style={{
-              width: "0.20vw",
+              width: "0.26vw",
               height: "100%",
               background: isDark
                 ? "linear-gradient(90deg, #444 0%, #888 50%, #444 100%)"
                 : "linear-gradient(90deg, #888 0%, #514532 50%, #888 100%)",
-              boxShadow: "0 0 0.13vw rgba(0,0,0,0.5)",
+              boxShadow: "0 0 0.17vw rgba(0,0,0,0.5)",
               transition: "background 0.3s",
             }}
           />
@@ -243,14 +311,14 @@ function ThemeLever({ isDark, toggle }: { isDark: boolean; toggle: () => void })
             position: "absolute",
             left: "50%",
             top: 0,
-            transform: `translateX(-50%) translateY(${isDark ? "0.26vw" : "2.34vw"})`,
+            transform: `translateX(-50%) translateY(${isDark ? "0.34vw" : "3.10vw"})`,
             transition: "transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)",
             width: "55%",
-            height: "1.04vw",
+            height: "1.38vw",
             background: "linear-gradient(180deg, #8b0000 0%, #600000 100%)",
-            border: "0.07vw solid #412d00",
-            borderRadius: "0.13vw",
-            boxShadow: "0 0.26vw 0.52vw rgba(0,0,0,0.6)",
+            border: "0.09vw solid #412d00",
+            borderRadius: "0.17vw",
+            boxShadow: "0 0.34vw 0.68vw rgba(0,0,0,0.6)",
             zIndex: 10,
           }}
         >
@@ -274,44 +342,6 @@ function ThemeLever({ isDark, toggle }: { isDark: boolean; toggle: () => void })
             pointerEvents: "none",
           }}
         />
-      </div>
-
-      {/* ── LT / DK labels ─────────────────────────────────────── */}
-      <div
-        style={{
-          position: "absolute",
-          right: "-1.56vw",
-          top: 0,
-          bottom: 0,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          padding: "0.52vw 0",
-          fontFamily: "var(--font-montserrat), monospace",
-          fontSize: "0.59vw",
-          fontWeight: 700,
-          pointerEvents: "none",
-          lineHeight: 1,
-        }}
-      >
-        <span
-          style={{
-            color: isDark ? "#ffdca1" : "#514532",
-            textShadow: isDark ? "0 0 5px rgba(255,184,0,0.5)" : "none",
-            transition: "color 0.3s, text-shadow 0.3s",
-          }}
-        >
-          DK
-        </span>
-        <span
-          style={{
-            color: !isDark ? "#ffdca1" : "#514532",
-            textShadow: !isDark ? "0 0 5px rgba(255,184,0,0.5)" : "none",
-            transition: "color 0.3s, text-shadow 0.3s",
-          }}
-        >
-          LT
-        </span>
       </div>
     </div>
   );
@@ -371,6 +401,20 @@ export default function Home() {
     document.documentElement.classList.toggle("dark", dark);
   }, []);
 
+  function scrollToId(id: string) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+
+    el.scrollIntoView({
+      behavior: prefersReduced ? "auto" : "smooth",
+      block: "start",
+    });
+    history.replaceState(null, "", `#${id}`);
+  }
+
   function toggleTheme() {
     const next = !isDark;
     setIsDark(next);
@@ -379,6 +423,7 @@ export default function Home() {
   }
 
   // ── Scroll reveal hooks (one per animated text block) ──────────────────
+  const rNav       = useReveal<HTMLElement>(0.06, "up");
   const rName      = useReveal<HTMLDivElement>(0.15, "up");
   const rSubtitle  = useReveal<HTMLDivElement>(0.35, "up");
   const rAboutHead = useReveal<HTMLParagraphElement>(0, "left");
@@ -386,6 +431,7 @@ export default function Home() {
   const rAboutP23  = useReveal<HTMLDivElement>(0.22, "up");
   const rEduHead   = useReveal<HTMLParagraphElement>(0, "left");
   const rNitg      = useReveal<HTMLDivElement>(0.08, "fade");
+  const rCamera    = useReveal<HTMLDivElement>(0.10, "left");
   const rInst      = useReveal<HTMLParagraphElement>(0.14, "up");
   const rDegree    = useReveal<HTMLParagraphElement>(0.20, "up");
   const rYear      = useReveal<HTMLParagraphElement>(0.14, "right");
@@ -400,6 +446,10 @@ export default function Home() {
         ─────────────────────────────────────────────────────────────────────
       */}
       <div style={{ position: "relative", width: "100%", height: "106vw" }}>
+        {/* Invisible anchors so nav links always work */}
+        <div id="projects" aria-hidden="true" style={{ position: "absolute", left: 0, top: "78vw", width: 1, height: 1 }} />
+        <div id="skills" aria-hidden="true" style={{ position: "absolute", left: 0, top: "92vw", width: 1, height: 1 }} />
+        <div id="contact" aria-hidden="true" style={{ position: "absolute", left: 0, top: "104vw", width: 1, height: 1 }} />
 
         {/* ── Grid background ────────────────────────────────────────────── */}
         <div
@@ -420,6 +470,7 @@ export default function Home() {
         {/*   Container: left 432/1536=28.13%, top 44.54/1536=2.90vw,        */}
         {/*   width 591.415/1536=38.51%, height 57.072/1536=3.72vw            */}
         <nav
+          ref={rNav.ref}
           style={{
             position: "absolute",
             left: "28.13%",
@@ -427,12 +478,18 @@ export default function Home() {
             width: "38.51%",
             display: "flex",
             gap: "1.30vw",
+            ...rNav.anim,
           }}
         >
           {NAV_LINKS.map((label) => (
             <a
               key={label}
+              className="nav-btn"
               href={`#${label.toLowerCase()}`}
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToId(label.toLowerCase());
+              }}
               style={{
                 position: "relative",
                 display: "flex",
@@ -482,6 +539,7 @@ export default function Home() {
           <p style={{ margin: 0 }}>Dhruval J.</p>
           <p style={{ margin: 0 }}>Vashi</p>
         </div>
+        <NameFlag isDark={isDark} />
 
         {/* ── Subtitle ───────────────────────────────────────────────────── */}
         {/*   left 113/1536=7.36%,  top 418/1536=27.21vw,  font 50/1536=3.26vw */}
@@ -514,8 +572,8 @@ export default function Home() {
           aria-hidden="true"
           style={{
             position: "absolute",
-            left: "-17.51%",
-            top: "-23.89vw",
+            left: "-16.90%",
+            top: "-22.90vw",
             width: "45.64%",
             height: "45.05vw",
             overflow: "hidden",
@@ -539,6 +597,8 @@ export default function Home() {
         {/*   Outer size: 387.205/1536=25.21% wide, aspect-ratio 1:1          */}
         {/*   Inner (319.419/387.205=81.07%): scaleY(-1) rotate(164.27deg)   */}
         <div
+          ref={rCamera.ref}
+          className="camera-deco"
           aria-hidden="true"
           style={{
             position: "absolute",
@@ -549,17 +609,18 @@ export default function Home() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            pointerEvents: "none",
+            pointerEvents: "auto",
+            ...rCamera.anim,
           }}
         >
           <div style={{ position: "relative", width: "81.07%", height: "81.07%" }}>
             <Image
+              className="camera-deco-img"
               src="/camera.png"
               alt=""
               fill
               style={{
                 objectFit: "cover",
-                transform: "scaleY(-1) rotate(164.27deg)",
               }}
             />
           </div>

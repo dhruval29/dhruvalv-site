@@ -6,6 +6,16 @@
   --grid-line: rgba(209, 213, 219, 1);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 html.dark {
   --background: #131254;
   --foreground: #e5e2e1;
@@ -46,5 +56,67 @@ html.dark main {
   .gear-spin {
     animation: spin-slow 12s linear infinite;
     transform-origin: center center;
+  }
+
+  .nav-btn {
+    transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .nav-btn:hover {
+    transform: translateY(-0.16vw);
+    box-shadow: 0 0.26vw 0.52vw rgba(0, 0, 0, 0.22);
+  }
+
+  .nav-btn:active {
+    transform: translateY(-0.06vw) scale(0.995);
+  }
+
+  .toggle-btn {
+    transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), filter 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .toggle-btn:hover {
+    transform: translateY(-0.12vw);
+    filter: drop-shadow(0 0.2vw 0.42vw rgba(0, 0, 0, 0.28));
+  }
+
+  .toggle-btn:active {
+    transform: translateY(-0.05vw) scale(0.99);
+  }
+
+  .camera-deco-img {
+    transform: scaleY(-1) rotate(164.27deg);
+    transform-origin: center center;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .camera-deco:hover .camera-deco-img {
+    transform: scaleY(-1) rotate(164.27deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-btn {
+    transition: none;
+  }
+
+  .nav-btn:hover,
+  .nav-btn:active {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .toggle-btn,
+  .toggle-btn:hover,
+  .toggle-btn:active {
+    transition: none;
+    transform: none;
+    filter: none;
+  }
+
+  .camera-deco-img,
+  .camera-deco:hover .camera-deco-img {
+    transition: none;
+    transform: scaleY(-1) rotate(164.27deg);
   }
 }
