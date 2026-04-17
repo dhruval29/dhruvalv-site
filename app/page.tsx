@@ -862,6 +862,8 @@ function MobileLayout({
         top,
         width,
         height,
+        transform: "scale(1.05)",
+        transformOrigin: "center",
         background: "#ffb800",
         border: "0.464vw solid #353535",
         display: "flex",
@@ -906,17 +908,17 @@ function MobileLayout({
       />
 
       {/* ── Gear (top-left, partially clipped, slowly rotating) ─────── */}
-      {/*   Outer: left -224/402 = -55.72%, top -337/402 = -83.83vw      */}
-      {/*   Outer size: 560.8/402 = 139.50% wide, 553.6/402 = 137.71vw   */}
+      {/*   Outer: nudged to keep the same corner framing after upsizing */}
+      {/*   Outer size intentionally enlarged for stronger mobile presence */}
       {/*   Inner inset matches Figma (group bounds inside artwork)      */}
       <div
         aria-hidden="true"
         style={{
           position: "absolute",
-          left: "-55.72%",
-          top: "-83.83vw",
-          width: "139.50%",
-          height: "137.71vw",
+          left: "-69%",
+          top: "-100vw",
+          width: "186%",
+          height: "184vw",
           overflow: "hidden",
           pointerEvents: "none",
         }}
@@ -942,15 +944,15 @@ function MobileLayout({
       <ThemeLever
         isDark={isDark}
         toggle={toggle}
-        left="78.36%"
-        top="9.45vw"
+        left="85.5%"
+        top="4.8vw"
         width="10.95%"
         fontSize="10.95vw"
         delay={0.05}
       />
 
       {/* ── Profile photo ───────────────────────────────────────────── */}
-      {/*   left 99/402=24.63%, top 153/402=38.06vw                      */}
+      {/*   left 99/402=24.63%, shifted up uniformly with hero cluster    */}
       {/*   width 197.744/402=49.19%, height 230.303/402=57.29vw         */}
       {/*   radius 5.267/402=1.31vw                                      */}
       <div
@@ -958,7 +960,7 @@ function MobileLayout({
         style={{
           position: "absolute",
           left: "24.63%",
-          top: "38.06vw",
+          top: "30.06vw",
           width: "49.19%",
           height: "57.29vw",
           borderRadius: "1.31vw",
@@ -976,17 +978,17 @@ function MobileLayout({
       </div>
 
       {/* ── Name "Dhruval J. / Vashi" ───────────────────────────────── */}
-      {/*   left 94/402=23.38%, top 427/402=106.22vw, font 40/402=9.95vw */}
+      {/*   left 94/402=23.38%, shifted up uniformly with hero cluster    */}
       <div
         ref={rName.ref}
         style={{
           position: "absolute",
           left: "23.38%",
-          top: "106.22vw",
+          top: "98.22vw",
           fontFamily,
           fontWeight: 900,
           fontSize: "9.95vw",
-          lineHeight: 1,
+          lineHeight: 1.12,
           color: "var(--foreground)",
           whiteSpace: "nowrap",
           transition: "color 0.3s",
@@ -998,14 +1000,14 @@ function MobileLayout({
       </div>
 
       {/* ── Flag pole beside "Vashi" ────────────────────────────────── */}
-      {/*   pole: x=221/402=54.98%, y=467/402=116.17vw, h=36/402=8.96vw  */}
+      {/*   pole: moved right to open spacing from name; matched to flag gap */}
       <div
         ref={rPole.ref}
         aria-hidden="true"
         style={{
           position: "absolute",
-          left: "54.98%",
-          top: "116.17vw",
+          left: "57.20%",
+          top: "110.3vw",
           width: "0.37vw",
           height: "8.96vw",
           background: isDark ? "#ffffff" : "#000000",
@@ -1014,15 +1016,15 @@ function MobileLayout({
       />
 
       {/* ── Flag (India) ────────────────────────────────────────────── */}
-      {/*   flag: x=237/402=58.96%, y=468/402=116.42vw                   */}
+      {/*   flag: moved right to keep even spacing with separator            */}
       {/*   size: 49.536/402=12.32% × 32.832/402=8.17vw                  */}
       <div
         ref={rFlag.ref}
         aria-hidden="true"
         style={{
           position: "absolute",
-          left: "58.96%",
-          top: "116.42vw",
+          left: "62.95%",
+          top: "110vw",
           width: "12.32%",
           height: "8.17vw",
           overflow: "hidden",
@@ -1038,13 +1040,13 @@ function MobileLayout({
       </div>
 
       {/* ── Subtitle ────────────────────────────────────────────────── */}
-      {/*   left 85/402=21.14%, top 542/402=134.83vw, font 24/402=5.97vw */}
+      {/*   left 85/402=21.14%, top increased for larger vertical rhythm */}
       <div
         ref={rSubtitle.ref}
         style={{
           position: "absolute",
           left: "21.14%",
-          top: "134.83vw",
+          top: "130.13vw",
           fontFamily,
           fontWeight: 300,
           fontSize: "5.97vw",
@@ -1059,16 +1061,16 @@ function MobileLayout({
       </div>
 
       {/* ── Navigation (3-up row + 1 centered below) ────────────────── */}
-      {/*   Row 1 (top 688/402=171.14vw):                                */}
+      {/*   Row 1 moved up so gap(name→subtitle) ≈ gap(subtitle→buttons) */}
       {/*     SKILLS  x=44/402=10.95% w=78/402=19.40% h=38/402=9.45vw    */}
       {/*     ABOUT   x=158/402=39.30% w=81/402=20.15% h=39/402=9.70vw   */}
       {/*     CONTACT x=275/402=68.41% w=94/402=23.38% h=39/402=9.70vw   */}
-      {/*   Row 2 (top 764/402=190.05vw):                                */}
+      {/*   Row 2 keeps same inter-row spacing after upward shift         */}
       {/*     PROJECTS x=148/402=36.82% w=101/402=25.12% h=38/402=9.45vw */}
-      {navButton("SKILLS",   "#skills",   "10.95%", "171.14vw", "19.40%", "9.45vw", rNavSkills)}
-      {navButton("ABOUT",    "#about",    "39.30%", "171.14vw", "20.15%", "9.70vw", rNavAbout)}
-      {navButton("CONTACT",  "#contact",  "68.41%", "171.14vw", "23.38%", "9.70vw", rNavContact)}
-      {navButton("PROJECTS", "#projects", "36.82%", "190.05vw", "25.12%", "9.45vw", rNavProjects)}
+      {navButton("SKILLS",   "#skills",   "10.95%", "157.41vw", "19.40%", "9.45vw", rNavSkills)}
+      {navButton("ABOUT",    "#about",    "39.30%", "157.41vw", "20.15%", "9.70vw", rNavAbout)}
+      {navButton("CONTACT",  "#contact",  "68.41%", "157.41vw", "23.38%", "9.70vw", rNavContact)}
+      {navButton("PROJECTS", "#projects", "36.82%", "176.32vw", "25.12%", "9.45vw", rNavProjects)}
 
       {/* ═══════════════════════════════════════════════════════════════
           ABOUT
@@ -1190,7 +1192,7 @@ function MobileLayout({
           position: "absolute",
           left: "9.70%",
           top: "383.58vw",
-          width: "74.38%",
+          width: "84%",
           fontFamily,
           color: "var(--foreground)",
           transition: "color 0.3s",
@@ -1201,15 +1203,16 @@ function MobileLayout({
           style={{
             margin: 0,
             fontWeight: 700,
-            fontSize: "3.98vw",
+            fontSize: "3.8vw",
             lineHeight: 1.06,
+            whiteSpace: "nowrap",
           }}
         >
           National Institute of Technology, Goa
         </p>
         <p
           style={{
-            margin: "2.49vw 0 0",
+            margin: "2.4vw 0 0",
             fontWeight: 700,
             fontSize: "2.99vw",
             lineHeight: 1.01,
@@ -1219,7 +1222,7 @@ function MobileLayout({
         </p>
         <p
           style={{
-            margin: "2.24vw 0 0",
+            margin: "2.4vw 0 0",
             fontWeight: 300,
             fontSize: "3.98vw",
             lineHeight: 1.01,
