@@ -45,6 +45,18 @@ html.dark main {
   to   { transform: rotate(360deg); }
 }
 
+/* ── Layout variants ────────────────────────────────────────────────────
+   Two absolutely-positioned canvases (desktop + mobile) live in the DOM;
+   CSS picks the right one. This avoids hydration flashes and lets each
+   layout animate in independently when it enters the viewport.        */
+.layout-mobile  { display: none; }
+.layout-desktop { display: block; }
+
+@media (max-width: 767px) {
+  .layout-desktop { display: none; }
+  .layout-mobile  { display: block; }
+}
+
 
 @layer utilities {
   .gear-spin {
