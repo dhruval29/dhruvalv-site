@@ -164,6 +164,58 @@ function PhotoWithDimensions({ bg, isDark }: { bg: string; isDark: boolean }) {
   );
 }
 
+/** Mobile profile photo with the same live dimension annotations */
+function MobilePhotoWithDimensions({ bg, isDark }: { bg: string; isDark: boolean }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [dims, setDims] = useState({ w: 0, h: 0 });
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([entry]) => {
+      setDims({
+        w: Math.round(entry.contentRect.width),
+        h: Math.round(entry.contentRect.height),
+      });
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  return (
+    <div
+      style={{
+        position: "absolute",
+        left: "9.07%",
+        top: "42.33vw",
+        width: "45.99%",
+        height: "53.56vw",
+      }}
+    >
+      <div
+        ref={ref}
+        style={{
+          position: "absolute",
+          inset: 0,
+          borderRadius: "1.23%",
+          overflow: "hidden",
+        }}
+      >
+        <Image
+          src="/profile.jpg"
+          alt="Dhruval J. Vashi"
+          fill
+          priority
+          style={{ objectFit: "cover", objectPosition: "42% top" }}
+        />
+      </div>
+
+      {dims.w > 0 && <DimLine type="horizontal" value={dims.w} bg={bg} isDark={isDark} />}
+      {dims.h > 0 && <DimLine type="vertical" value={dims.h} bg={bg} isDark={isDark} />}
+    </div>
+  );
+}
+
 /** Corner-dot accent squares used inside each nav button */
 function CornerDots() {
   const shared: React.CSSProperties = {
@@ -233,7 +285,19 @@ function NameFlag({ isDark }: { isDark: boolean }) {
  * "Toggle System Illumination" lever — ported from the Stitch design.
  * Receives isDark + toggle from the parent so the whole page can react.
  */
-function ThemeLever({ isDark, toggle }: { isDark: boolean; toggle: () => void }) {
+function ThemeLever({
+  isDark,
+  toggle,
+  left = "92.20%",
+  top = "2.01vw",
+  width = "3.80%",
+}: {
+  isDark: boolean;
+  toggle: () => void;
+  left?: string;
+  top?: string;
+  width?: string;
+}) {
   const reveal = useReveal<HTMLDivElement>(0.08, "up");
 
   return (
@@ -244,9 +308,9 @@ function ThemeLever({ isDark, toggle }: { isDark: boolean; toggle: () => void })
       title="Toggle System Illumination"
       style={{
         position: "absolute",
-        left: "92.20%",
-        top: "2.01vw",
-        width: "3.80%",
+        left,
+        top,
+        width,
         cursor: "pointer",
         userSelect: "none",
         ...reveal.anim,
@@ -347,6 +411,78 @@ function ThemeLever({ isDark, toggle }: { isDark: boolean; toggle: () => void })
   );
 }
 
+function NameFlagMobile({ isDark }: { isDark: boolean }) {
+  return (
+    <>
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          left: "37.91%",
+          top: "117.67vw",
+          width: "0.12vw",
+          height: "8.37vw",
+          background: isDark ? "#ffffff" : "#000000",
+        }}
+      />
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          left: "41.63%",
+          top: "117.67vw",
+          width: "11.52%",
+          height: "7.64vw",
+          overflow: "hidden",
+        }}
+      >
+        <Image src="/Flag_of_India.svg.png" alt="" fill style={{ objectFit: "cover" }} />
+      </div>
+    </>
+  );
+}
+
+function MobileNavButton({
+  label,
+  href,
+  onClick,
+  width,
+}: {
+  label: string;
+  href: string;
+  onClick: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+  width: string;
+}) {
+  return (
+    <a
+      className="nav-btn"
+      href={href}
+      onClick={onClick}
+      style={{
+        position: "relative",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width,
+        height: "8.84vw",
+        background: "#ffb800",
+        border: "0.43vw solid #353535",
+        fontFamily: "var(--font-montserrat), sans-serif",
+        fontWeight: 700,
+        fontSize: "2.38vw",
+        letterSpacing: "0.24vw",
+        textTransform: "uppercase",
+        color: "#000",
+        textDecoration: "none",
+        whiteSpace: "nowrap",
+      }}
+    >
+      {label}
+      <CornerDots />
+    </a>
+  );
+}
+
 /**
  * Scroll-reveal hook — observes an element and returns animated style once it
  * enters the viewport. Fires immediately for above-the-fold elements so hero
@@ -393,12 +529,20 @@ function useReveal<T extends HTMLElement>(
 
 export default function Home() {
   const [isDark, setIsDark] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem("theme");
     const dark = saved === "dark";
     setIsDark(dark);
     document.documentElement.classList.toggle("dark", dark);
+  }, []);
+
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth <= 768);
+    onResize();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, []);
 
   function scrollToId(id: string) {
@@ -435,6 +579,196 @@ export default function Home() {
   const rInst      = useReveal<HTMLParagraphElement>(0.14, "up");
   const rDegree    = useReveal<HTMLParagraphElement>(0.20, "up");
   const rYear      = useReveal<HTMLParagraphElement>(0.14, "right");
+
+  if (isMobile) {
+    return (
+      <main style={{ width: "100%", overflowX: "hidden", background: isDark ? "#131254" : "#ffffff", transition: "background 0.3s" }}>
+        <div style={{ position: "relative", width: "100%", height: "402vw" }}>
+          <div id="skills" aria-hidden="true" style={{ position: "absolute", left: 0, top: "160vw", width: 1, height: 1 }} />
+          <div id="about" aria-hidden="true" style={{ position: "absolute", left: 0, top: "214vw", width: 1, height: 1 }} />
+          <div id="contact" aria-hidden="true" style={{ position: "absolute", left: 0, top: "331vw", width: 1, height: 1 }} />
+          <div id="projects" aria-hidden="true" style={{ position: "absolute", left: 0, top: "186vw", width: 1, height: 1 }} />
+
+          <div
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              inset: 0,
+              pointerEvents: "none",
+              backgroundImage:
+                "linear-gradient(to right, var(--grid-line) 1px, transparent 1px), " +
+                "linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px)",
+              backgroundSize: "5.58vw 5.58vw",
+            }}
+          />
+
+          <div
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              left: "-52.09%",
+              top: "-78.37vw",
+              width: "130.42%",
+              height: "128.74vw",
+              overflow: "hidden",
+              pointerEvents: "none",
+            }}
+          >
+            <div style={{ position: "absolute", inset: "31.94% 33.83% 15.38% 12.70%" }}>
+              <Image src="/6326.svg" alt="" fill style={{ objectFit: "contain" }} />
+            </div>
+          </div>
+
+          <ThemeLever
+            isDark={isDark}
+            toggle={toggleTheme}
+            left="73.26%"
+            top="8.84vw"
+            width="10.23%"
+          />
+
+          <MobilePhotoWithDimensions bg={isDark ? "#131254" : "#ffffff"} isDark={isDark} />
+
+          <div
+            style={{
+              position: "absolute",
+              left: "8.37%",
+              top: "108.37vw",
+              fontFamily: "var(--font-montserrat), sans-serif",
+              fontWeight: 900,
+              fontSize: "9.30vw",
+              lineHeight: 1,
+              color: "var(--foreground)",
+              transition: "color 0.3s",
+              whiteSpace: "nowrap",
+            }}
+          >
+            <p style={{ margin: 0 }}>Dhruval J.</p>
+            <p style={{ margin: 0 }}>Vashi</p>
+          </div>
+          <NameFlagMobile isDark={isDark} />
+
+          <div
+            style={{
+              position: "absolute",
+              left: "9.07%",
+              top: "133.26vw",
+              fontFamily: "var(--font-montserrat), sans-serif",
+              fontWeight: 300,
+              fontSize: "5.58vw",
+              lineHeight: 1.01,
+              color: "var(--foreground)",
+              transition: "color 0.3s",
+              whiteSpace: "nowrap",
+            }}
+          >
+            <p style={{ margin: 0 }}>{"Engineer, Av-Geek & "}</p>
+            <p style={{ margin: 0 }}>Photographer</p>
+          </div>
+
+          <div style={{ position: "absolute", left: "9.07%", top: "160vw", display: "flex", gap: "8.37vw" }}>
+            <MobileNavButton label="SKILLS" href="#skills" width="18.14%" onClick={(e) => { e.preventDefault(); scrollToId("skills"); }} />
+            <MobileNavButton label="ABOUT" href="#about" width="18.84%" onClick={(e) => { e.preventDefault(); scrollToId("about"); }} />
+            <MobileNavButton label="CONTACT" href="#contact" width="21.86%" onClick={(e) => { e.preventDefault(); scrollToId("contact"); }} />
+          </div>
+          <div style={{ position: "absolute", left: "33.72%", top: "177.67vw" }}>
+            <MobileNavButton label="PROJECTS" href="#projects" width="23.49%" onClick={(e) => { e.preventDefault(); scrollToId("projects"); }} />
+          </div>
+
+          <p
+            style={{
+              position: "absolute",
+              left: "9.07%",
+              top: "214vw",
+              margin: 0,
+              fontFamily: "var(--font-montserrat), sans-serif",
+              fontWeight: 700,
+              fontSize: "7.44vw",
+              lineHeight: 1.01,
+              color: "var(--foreground)",
+              transition: "color 0.3s",
+            }}
+          >
+            ABOUT
+          </p>
+          <p
+            style={{
+              position: "absolute",
+              left: "9.07%",
+              top: "235.12vw",
+              width: "76.74%",
+              margin: 0,
+              fontFamily: "var(--font-montserrat), sans-serif",
+              fontWeight: 300,
+              fontSize: "5.58vw",
+              lineHeight: 1.12,
+              color: "var(--foreground)",
+              transition: "color 0.3s",
+            }}
+          >
+            When I was younger , always loved to tinker with things that move, my dad got me a MECHANIX set &amp; I used to spend hours working on that.
+          </p>
+          <p
+            style={{
+              position: "absolute",
+              left: "9.07%",
+              top: "279.53vw",
+              width: "84.65%",
+              margin: 0,
+              fontFamily: "var(--font-montserrat), sans-serif",
+              fontWeight: 300,
+              fontSize: "5.58vw",
+              lineHeight: 1.12,
+              color: "var(--foreground)",
+              transition: "color 0.3s",
+            }}
+          >
+            Living next to an Airport, made me fascinated about planes, that such a humongous thing can fly.
+          </p>
+
+          <p
+            style={{
+              position: "absolute",
+              left: "8.37%",
+              top: "331.16vw",
+              margin: 0,
+              fontFamily: "var(--font-montserrat), sans-serif",
+              fontWeight: 700,
+              fontSize: "7.44vw",
+              lineHeight: 1.01,
+              color: "var(--foreground)",
+              transition: "color 0.3s",
+            }}
+          >
+            EDUCATION
+          </p>
+          <div style={{ position: "absolute", left: "9.07%", top: "344.19vw", width: "11.16%", height: "11.16vw" }}>
+            <Image src="/nitg-logo.png" alt="NIT Goa logo" fill style={{ objectFit: "contain" }} />
+          </div>
+          <div
+            style={{
+              position: "absolute",
+              left: "9.07%",
+              top: "358.60vw",
+              width: "69.53%",
+              color: "var(--foreground)",
+              transition: "color 0.3s",
+            }}
+          >
+            <p style={{ margin: 0, fontFamily: "var(--font-montserrat), sans-serif", fontWeight: 500, fontSize: "3.72vw", lineHeight: 1.06 }}>
+              National Institute of Technology, Goa
+            </p>
+            <p style={{ margin: "1.40vw 0 0", fontFamily: "var(--font-montserrat), sans-serif", fontWeight: 500, fontSize: "2.79vw", lineHeight: 1.01 }}>
+              2023-Present
+            </p>
+            <p style={{ margin: "1.63vw 0 0", fontFamily: "var(--font-montserrat), sans-serif", fontWeight: 300, fontSize: "3.72vw", lineHeight: 1.01 }}>
+              B.Tech, Mechanical Engineering
+            </p>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main style={{ width: "100%", overflowX: "hidden", background: isDark ? "#131254" : "#ffffff", transition: "background 0.3s" }}>
