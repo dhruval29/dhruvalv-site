@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
+import MechSpringCanvas from "../components/MechSpringCanvas";
+import RulerEdge from "../components/RulerEdge";
 
 /**
  * Personal portfolio page
@@ -438,7 +440,8 @@ function DesktopLayout({
   const rAboutP23  = useReveal<HTMLDivElement>(0.22, "up");
   const rEduHead   = useReveal<HTMLParagraphElement>(0, "left");
   const rNitg      = useReveal<HTMLDivElement>(0.08, "fade");
-  const rCamera    = useReveal<HTMLDivElement>(0.10, "left");
+  const rCamera    = useReveal<HTMLDivElement>(0.10, "right");
+  const rMechanix  = useReveal<HTMLDivElement>(0.12, "left");
   const rInst      = useReveal<HTMLParagraphElement>(0.14, "up");
   const rDegree    = useReveal<HTMLParagraphElement>(0.20, "up");
   const rYear      = useReveal<HTMLParagraphElement>(0.14, "right");
@@ -464,6 +467,10 @@ function DesktopLayout({
           transition: "background-image 0.3s",
         }}
       />
+
+      {/* Ruler ticks drawn directly on top of the grid — scrolls with
+          the page, spans the full layout height along the right edge. */}
+      <RulerEdge />
 
       {/* ── Navigation bar ──────────────────────────────────────────── */}
       <nav
@@ -592,15 +599,43 @@ function DesktopLayout({
         </div>
       </div>
 
-      {/* ── Camera decoration (bottom-left) ─────────────────────────── */}
+      {/* ── MECHANIX spring illustration (left mid-hero) ────────────
+          Figma anchor: ~1.22% / 39.34vw. The canvas draws at a 680:280
+          (≈2.43:1) logical ratio, so we size the container via
+          `aspect-ratio` instead of the old SVG's 3.45:1 box — otherwise
+          the physics diagram would be stretched horizontally. Width is
+          Figma's 35.04% × 1.1 ≈ 38.544% to scale the illustration up
+          10%; height follows from aspect-ratio automatically. Canvas
+          is wall-on-LEFT natively, so no scaleX(-1) flip.
+         ─────────────────────────────────────────────────────────── */}
+      <div
+        ref={rMechanix.ref}
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          left: "1.22%",
+          top: "36vw",
+          width: "38.544%",
+          aspectRatio: "680 / 280",
+          pointerEvents: "none",
+          ...rMechanix.anim,
+        }}
+      >
+        <MechSpringCanvas />
+      </div>
+
+      {/* ── Camera decoration (now below profile photo, right) ──────
+          Figma: container left=1188, top=662, size=387.205 (25.21% × 25.21vw)
+          Inner: 319.419/387.205 = 82.49% of container, rotated -166° + scaleY(-1)
+         ─────────────────────────────────────────────────────────── */}
       <div
         ref={rCamera.ref}
         className="camera-deco"
         aria-hidden="true"
         style={{
           position: "absolute",
-          left: "-4.49%",
-          top: "32.03vw",
+          left: "77.34%",
+          top: "43.10vw",
           width: "25.21%",
           aspectRatio: "1 / 1",
           display: "flex",
@@ -610,13 +645,13 @@ function DesktopLayout({
           ...rCamera.anim,
         }}
       >
-        <div style={{ position: "relative", width: "81.07%", height: "81.07%" }}>
+        <div style={{ position: "relative", width: "82.49%", height: "82.49%" }}>
           <Image
             className="camera-deco-img"
             src="/camera.png"
             alt=""
             fill
-            style={{ objectFit: "cover" }}
+            style={{ objectFit: "contain" }}
           />
         </div>
       </div>
@@ -827,6 +862,7 @@ function MobileLayout({
   const rNavAbout     = useReveal<HTMLAnchorElement>(0.14, "up");
   const rNavContact   = useReveal<HTMLAnchorElement>(0.22, "up");
   const rNavProjects  = useReveal<HTMLAnchorElement>(0.30, "up");
+  const rMechanix  = useReveal<HTMLDivElement>(0.14, "up");
   const rAboutHead = useReveal<HTMLParagraphElement>(0,    "left");
   const rAboutP1   = useReveal<HTMLParagraphElement>(0.12, "up");
   const rAboutP2   = useReveal<HTMLParagraphElement>(0.22, "up");
@@ -906,6 +942,10 @@ function MobileLayout({
           transition: "background-image 0.3s",
         }}
       />
+
+      {/* Ruler ticks drawn directly on top of the grid — scrolls with
+          the page, spans the full layout height along the right edge. */}
+      <RulerEdge />
 
       {/* ── Gear (top-left, partially clipped, slowly rotating) ─────── */}
       {/*   Outer: nudged to keep the same corner framing after upsizing */}
@@ -1071,6 +1111,29 @@ function MobileLayout({
       {navButton("ABOUT",    "#about",    "39.30%", "157.41vw", "20.15%", "9.70vw", rNavAbout)}
       {navButton("CONTACT",  "#contact",  "68.41%", "157.41vw", "23.38%", "9.70vw", rNavContact)}
       {navButton("PROJECTS", "#projects", "36.82%", "176.32vw", "25.12%", "9.45vw", rNavProjects)}
+
+      {/* ── MECHANIX spring-mass canvas ────────────────────────────────
+          Sits between the nav buttons and the ABOUT heading.
+            • row-2 buttons end at  176.32 + 9.45 = 185.77vw
+            • ABOUT heading starts at 228.86vw  →  ~43vw gap
+          Canvas is 80% wide, centered (left 10%), with the 680:280
+          aspect-ratio driving its height (≈ 32.94vw of the viewport),
+          leaving ~6vw breathing room above the ABOUT heading.         */}
+      <div
+        ref={rMechanix.ref}
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          left: "10%",
+          top: "190vw",
+          width: "80%",
+          aspectRatio: "680 / 280",
+          pointerEvents: "none",
+          ...rMechanix.anim,
+        }}
+      >
+        <MechSpringCanvas />
+      </div>
 
       {/* ═══════════════════════════════════════════════════════════════
           ABOUT

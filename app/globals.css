@@ -4,6 +4,10 @@
   --background: #ffffff;
   --foreground: #000000;
   --grid-line: rgba(209, 213, 219, 1);
+  /* Ruler tick ink (components/RulerEdge.tsx). The ruler strips are
+     transparent — only the ticks are painted, sitting directly on top
+     of the grid background. */
+  --ruler-ink: rgba(0, 0, 0, 0.65);
 }
 
 html {
@@ -20,6 +24,7 @@ html.dark {
   --background: #131254;
   --foreground: #e5e2e1;
   --grid-line: rgba(255, 255, 255, 0.06);
+  --ruler-ink: rgba(229, 226, 225, 0.55);
 }
 
 body {
@@ -44,6 +49,10 @@ html.dark main {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
 }
+
+/* The MECHANIX spring-mass oscillator now renders on a <canvas> — see
+   components/MechSpringCanvas.tsx. Motion (incl. prefers-reduced-motion
+   handling) is driven inside the component so no CSS hooks are needed. */
 
 /* ── Layout variants ────────────────────────────────────────────────────
    Two absolutely-positioned canvases (desktop + mobile) live in the DOM;
@@ -91,13 +100,13 @@ html.dark main {
   }
 
   .camera-deco-img {
-    transform: scaleY(-1) rotate(164.27deg);
+    transform: rotate(-166deg) scaleY(-1);
     transform-origin: center center;
     transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .camera-deco:hover .camera-deco-img {
-    transform: scaleY(-1) rotate(164.27deg);
+    transform: rotate(-166deg) scaleY(-1);
   }
 }
 
@@ -123,6 +132,6 @@ html.dark main {
   .camera-deco-img,
   .camera-deco:hover .camera-deco-img {
     transition: none;
-    transform: scaleY(-1) rotate(164.27deg);
+    transform: rotate(-166deg) scaleY(-1);
   }
 }
