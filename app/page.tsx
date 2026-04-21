@@ -361,6 +361,8 @@ function PhotoWithDimensions({ bg, isDark }: { bg: string; isDark: boolean }) {
           src="/profile.jpg"
           alt="Dhruval J. Vashi"
           fill
+          sizes="24vw"
+          quality={100}
           style={{ objectFit: "cover", objectPosition: "42% top" }}
           priority
         />
@@ -613,7 +615,7 @@ function DesktopLayout({
         aria-hidden="true"
         style={{
           position: "absolute",
-          left: "1.22%",
+          left: "-3.5%",
           top: "36vw",
           width: "38.544%",
           aspectRatio: "680 / 280",
@@ -622,6 +624,46 @@ function DesktopLayout({
         }}
       >
         <MechSpringCanvas />
+        <p
+          style={{
+            position: "absolute",
+            right: "10%",
+            top: "9.2%",
+            margin: 0,
+            color: "var(--ink-blue)",
+            fontFamily: '"Comic Sans MS", "Bradley Hand", cursive',
+            fontStyle: "italic",
+            fontWeight: 500,
+            fontSize: "clamp(20px, 1.58vw, 30px)",
+            letterSpacing: "0.02em",
+            transform: "rotate(-11deg)",
+            textShadow: "0.03em 0.03em 0 rgba(0,0,0,0.06)",
+            userSelect: "none",
+          }}
+        >
+          E ={" "}
+          <span
+            style={{
+              display: "inline-flex",
+              flexDirection: "column",
+              alignItems: "center",
+              verticalAlign: "middle",
+              lineHeight: 1,
+              margin: "0 0.08em",
+            }}
+          >
+            <span style={{ paddingBottom: "0.04em" }}>1</span>
+            <span
+              style={{
+                width: "0.8em",
+                borderTop: "0.06em solid currentColor",
+                margin: "0.02em 0",
+              }}
+            />
+            <span style={{ paddingTop: "0.02em" }}>2</span>
+          </span>{" "}
+          kx²
+        </p>
       </div>
 
       {/* ── Camera decoration (now below profile photo, right) ──────
@@ -668,7 +710,7 @@ function DesktopLayout({
           top: "56.90vw",
           margin: 0,
           fontFamily: "var(--font-montserrat), sans-serif",
-          fontWeight: 700,
+          fontWeight: 300,
           fontSize: "3.13vw",
           lineHeight: 1.01,
           color: "var(--foreground)",
@@ -690,7 +732,7 @@ function DesktopLayout({
           margin: 0,
           fontFamily: "var(--font-montserrat), sans-serif",
           fontWeight: 300,
-          fontSize: "2.08vw",
+          fontSize: "1.85vw",
           lineHeight: 1.11,
           color: "var(--foreground)",
           transition: "color 0.3s",
@@ -819,7 +861,7 @@ function DesktopLayout({
           top: "95.25vw",
           margin: 0,
           fontFamily: "var(--font-montserrat), sans-serif",
-          fontWeight: 300,
+          fontWeight: 700,
           fontSize: "2.08vw",
           lineHeight: 1.01,
           color: "var(--foreground)",
@@ -828,7 +870,7 @@ function DesktopLayout({
           ...rYear.anim,
         }}
       >
-        2023-27
+        2023-Present
       </p>
     </div>
   );
@@ -1012,6 +1054,8 @@ function MobileLayout({
           src="/profile.jpg"
           alt="Dhruval J. Vashi"
           fill
+          sizes="49vw"
+          quality={100}
           style={{ objectFit: "cover", objectPosition: "42% top" }}
           priority
         />
@@ -1124,15 +1168,55 @@ function MobileLayout({
         aria-hidden="true"
         style={{
           position: "absolute",
-          left: "10%",
+          left: "0.9%",
           top: "190vw",
-          width: "80%",
+          width: "84%",
           aspectRatio: "680 / 280",
           pointerEvents: "none",
           ...rMechanix.anim,
         }}
       >
         <MechSpringCanvas />
+        <p
+          style={{
+            position: "absolute",
+            right: "0.1%",
+            top: "10.2%",
+            margin: 0,
+            color: "var(--ink-blue)",
+            fontFamily: '"Comic Sans MS", "Bradley Hand", cursive',
+            fontStyle: "italic",
+            fontWeight: 500,
+            fontSize: "clamp(16px, 4.8vw, 22px)",
+            letterSpacing: "0.02em",
+            transform: "rotate(-12deg)",
+            textShadow: "0.03em 0.03em 0 rgba(0,0,0,0.06)",
+            userSelect: "none",
+          }}
+        >
+          E ={" "}
+          <span
+            style={{
+              display: "inline-flex",
+              flexDirection: "column",
+              alignItems: "center",
+              verticalAlign: "middle",
+              lineHeight: 1,
+              margin: "0 0.08em",
+            }}
+          >
+            <span style={{ paddingBottom: "0.04em" }}>1</span>
+            <span
+              style={{
+                width: "0.8em",
+                borderTop: "0.06em solid currentColor",
+                margin: "0.02em 0",
+              }}
+            />
+            <span style={{ paddingTop: "0.02em" }}>2</span>
+          </span>{" "}
+          kx²
+        </p>
       </div>
 
       {/* ═══════════════════════════════════════════════════════════════
@@ -1145,7 +1229,7 @@ function MobileLayout({
         style={{
           position: "absolute",
           left: "9.70%",
-          top: "228.86vw",
+          top: "233.36vw",
           margin: 0,
           fontFamily,
           fontWeight: 700,
@@ -1166,7 +1250,7 @@ function MobileLayout({
         style={{
           position: "absolute",
           left: "9.70%",
-          top: "251.49vw",
+          top: "255.99vw",
           width: "82.09%",
           margin: 0,
           fontFamily,
@@ -1187,7 +1271,7 @@ function MobileLayout({
         style={{
           position: "absolute",
           left: "9.70%",
-          top: "299.00vw",
+          top: "303.50vw",
           width: "90.55%",
           margin: 0,
           fontFamily,
@@ -1276,7 +1360,7 @@ function MobileLayout({
         <p
           style={{
             margin: "2.4vw 0 0",
-            fontWeight: 700,
+            fontWeight: 300,
             fontSize: "2.99vw",
             lineHeight: 1.01,
           }}

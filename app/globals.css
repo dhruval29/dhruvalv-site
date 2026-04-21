@@ -4,6 +4,7 @@
   --background: #ffffff;
   --foreground: #000000;
   --grid-line: rgba(209, 213, 219, 1);
+  --ink-blue: rgba(25, 86, 177, 0.96);
   /* Ruler tick ink (components/RulerEdge.tsx). The ruler strips are
      transparent — only the ticks are painted, sitting directly on top
      of the grid background. */
@@ -24,6 +25,7 @@ html.dark {
   --background: #131254;
   --foreground: #e5e2e1;
   --grid-line: rgba(255, 255, 255, 0.06);
+  --ink-blue: rgba(164, 205, 255, 0.95);
   --ruler-ink: rgba(229, 226, 225, 0.55);
 }
 
