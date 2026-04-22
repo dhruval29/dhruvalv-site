@@ -710,7 +710,7 @@ function DesktopLayout({
           top: "56.90vw",
           margin: 0,
           fontFamily: "var(--font-montserrat), sans-serif",
-          fontWeight: 300,
+          fontWeight: 700,
           fontSize: "3.13vw",
           lineHeight: 1.01,
           color: "var(--foreground)",
