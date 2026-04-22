@@ -12,6 +12,9 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: "Dhruval J. Vashi — Engineer, Av-Geek & Photographer",
   description: "Personal resume website of Dhruval J. Vashi",
+  icons: {
+    icon: "/airplane-svgrepo-com.svg",
+  },
 };
 
 export default function RootLayout({
